@@ -9,24 +9,29 @@ Send a post request to this endpoint https://apidetect.herokuapp.com/attendance/
 - Create a virtual environment using following command.
     for linux and mac -
 
-    ```python
+    ```console
     python3 -m venv env
     ```
 
     or in windows
 
-    ```python
+    ```console
     py -m venv env
     ```
+- Activate the virtual environment.
 
+    ```console
+    source venv/bin/activate
+    ```
+    
 - Install all the required packages.
 
-    ```python
+    ```console
     pip install -r requirements.txt
     ```
 
 - Run the Django Test Server.
 
-    ```python
+    ```console
     python manage.py runserver
     ```
