@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Home Page</title>
+	</head>
+	<body>
+		<h1>This is a Face Detection API made in openCV.</h1>
+		<p>
+			Send a Post request to this Endpoint
+			<b>{{request.build_absolute_uri}}detect/</b> along with image url or raw
+			image to make prediction.
+		</p>
+	</body>
+</html>

@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from attendance import recognize as rec
@@ -6,6 +7,8 @@ import urllib
 import json
 import cv2
 
+def home(request):
+    return render(request, 'home.html')
 
 @csrf_exempt
 def detect(request):
