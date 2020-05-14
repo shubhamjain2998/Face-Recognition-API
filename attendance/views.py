@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from attendance import recognize as rec
+from attendance.models import Employee
 import numpy as np
 import urllib
 import json
@@ -31,8 +32,19 @@ def detect(request):
             # load the image and convert
             image = _grab_image(url=url)
         result = rec.predict_face(image)
-        data.update({'result': result})
+        # data.update({'result': result})
         data["success"] = True
+
+        employee = Employee.objects.all()
+        employee_name = employee.get(ID=int(result['name'])).Name
+        res = {}
+        res['id'] = result['name']
+        res['name'] = employee_name
+        res['accuracy'] = result['accuracy']
+        data['result'] = res
+        
+        
+
     # return a JSON response
     return JsonResponse(data)
 

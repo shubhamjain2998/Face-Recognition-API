@@ -11,7 +11,7 @@ imutils==0.5.3
 joblib==0.14.1
 numpy==1.18.4
 opencv-python==4.2.0.34
-psycopg2==2.8.5
+
 pycodestyle==2.6.0
 pytz==2020.1
 requests==2.23.0
