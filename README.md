@@ -4,29 +4,38 @@ This is an API made in Django, to integrate face detection app built with opencv
 
 Send a post request to this endpoint https://apidetect.herokuapp.com/attendance/detect/ along with raw image or url to the image to get response.
 
+## Developed By - 
+- [Shubham Jain](https://github.com/shubhamjain2998)
+- [Jatin Sahu](https://github.com/JatinSahu0506)
+
 ## Steps for installation.
 
-- Create a virtual environment using following command.
+1. Create a virtual environment using following command.
     for linux and mac -
 
-    ```python
+    ```console
     python3 -m venv env
     ```
 
     or in windows
 
-    ```python
+    ```console
     py -m venv env
     ```
+2. Activate the virtual environment.
 
-- Install all the required packages.
+    ```console
+    source venv/bin/activate
+    ```
+    
+3. Install all the required packages.
 
-    ```python
+    ```console
     pip install -r requirements.txt
     ```
 
-- Run the Django Test Server.
+4. Run the Django Test Server.
 
-    ```python
+    ```console
     python manage.py runserver
     ```
