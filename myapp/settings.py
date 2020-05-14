@@ -120,7 +120,7 @@ USE_TZ = True
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
-    "https://attendance-e5b74.firebaseapp.com/",
+    "https://attendance-e5b74.firebaseapp.com",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

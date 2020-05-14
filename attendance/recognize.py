@@ -12,14 +12,14 @@ def predict_face(image_to_predict):
 	label_encoder = os.path.dirname(os.path.abspath(__file__)) + "/" + "output" + "/" + "le.pickle"
 
 
-	print("[INFO] loading face detector...")
+	# print("[INFO] loading face detector...")
 	protoPath = os.path.sep.join([detector, "deploy.prototxt"])
 	modelPath = os.path.sep.join([detector,
 		"res10_300x300_ssd_iter_140000.caffemodel"])
 	detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
 	# load our serialized face embedding model from disk
-	print("[INFO] loading face recognizer...")
+	# print("[INFO] loading face recognizer...")
 	embedder = cv2.dnn.readNetFromTorch(embeddingModel)
 
 	# load the actual face recognition model along with the label encoder
@@ -86,4 +86,4 @@ def predict_face(image_to_predict):
 			cv2.putText(image, text, (startX, y),
 				cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
-	return {"name": name, "accuracy": proba}
+	return {"name": name, "accuracy": '{:.2f}%'.format(proba*100)}
