@@ -55,17 +55,20 @@ def predict_face(image_to_predict):
 	# faces in the input image
 	detector.setInput(imageBlob)
 	detections = detector.forward()
-
+	
+	result = {}
 	# loop over the detections
 	for i in range(0, detections.shape[2]):
 		# extract the confidence (i.e., probability) associated with the
 		# prediction
 		confidence = detections[0, 0, i, 2]
 
+		print("confidence : ", confidence)
 		# filter out weak detections
 		if confidence > 0.8:
 			# compute the (x, y)-coordinates of the bounding box for the
 			# face
+			flag = 1
 			box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
 			(startX, startY, endX, endY) = box.astype("int")
 
@@ -108,7 +111,12 @@ def predict_face(image_to_predict):
 			# cv2.imshow(image)
 			# cv2.waitKey(0)
 			# cv2.destroyAllWindows()
-			result = {"name": name, "accuracy":round(proba*100,2)}
+			result = {"name": name, "accuracy":round(proba*100,2), "error" : ""}
 			print(result)
-
+			break
+		else:
+			flag=0
+			continue
+	if flag==0:
+		result = {"name": "", "accuracy": "", "error" : "No faces were found !!!"}
 	return result
