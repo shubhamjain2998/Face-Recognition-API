@@ -32,16 +32,20 @@ def detect(request):
             # load the image and convert
             image = _grab_image(url=url)
         result = rec.predict_face(image)
-        # data.update({'result': result})
-        data["success"] = True
+        if result["error"] != '':
+            data["success"] = False
+            data["result"] = result
+        else:
+            # data.update({'result': result})
+            data["success"] = True
 
-        employee = Employee.objects.all()
-        employee_name = employee.get(ID=int(result['name'])).Name
-        res = {}
-        res['id'] = result['name']
-        res['name'] = employee_name
-        res['accuracy'] = result['accuracy']
-        data['result'] = res
+            employee = Employee.objects.all()
+            employee_name = employee.get(ID=int(result['name'])).Name
+            res = {}
+            res['id'] = result['name']
+            res['name'] = employee_name
+            res['accuracy'] = result['accuracy']
+            data['result'] = res
         
         
 

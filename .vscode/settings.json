@@ -1,4 +1,4 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "faceR/bin/python"
+    "python.pythonPath": "venv/bin/python"
 }
