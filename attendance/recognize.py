@@ -63,7 +63,7 @@ def predict_face(image_to_predict):
 		# prediction
 		confidence = detections[0, 0, i, 2]
 
-		print("confidence : ", confidence)
+		# print("confidence : ", confidence)
 		# filter out weak detections
 		if confidence > 0.8:
 			# compute the (x, y)-coordinates of the bounding box for the
