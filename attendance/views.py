@@ -20,6 +20,7 @@ import numpy as np
 import urllib
 import json
 import cv2
+import datetime
 
 def home(request):
     return render(request, 'home.html')
@@ -221,6 +222,60 @@ def train_dataset(request):
     
         dc.create_dataset(name,image)
 
-
     train_model.create_model()
     return JsonResponse({"status":"success, dataset and model created successfully"})
+
+@csrf_exempt
+def report_att(request):
+    report = {}
+    empids = set()
+    orgId = request.GET['orgId']
+    month = request.GET['month']
+
+    # employee = Account.objects.raw(f'select * from attendance_account where orgId_id={orgId}')
+    employee = Account.objects.filter(orgId=orgId)
+    for i in employee:
+        empids.add(i.empId)
+    
+    for i in empids:
+        # query = Attendance.objects.raw(f'select * from attendance_attendance where empId_id={i}')
+        query = Attendance.objects.filter(empId=i)
+        days = [0]*31
+        for j in query:
+            if j.date.month == int(month):
+                if j.leave==0:
+                    days[j.date.day-1] = 1
+                else:
+                    days[j.date.day-1] = -1
+        report[f'{i}'] = days
+    return JsonResponse(report)
+
+@csrf_exempt
+def daily_report(request):
+    orgId = request.GET['orgId']
+    date = request.GET['date']
+
+    empids=set()
+    # employee = Account.objects.raw(f'select * from attendance_account where orgId_id={orgId}')
+    employee = Account.objects.filter(orgId=orgId)
+    for i in employee:
+        empids.add(i.empId)
+
+    present, absent, leave = [0,0,0]
+    for j in empids:
+        # attendance = Attendance.objects.raw(f'select * from attendance_attendance where date="{date}" and empId_id={j}')
+        attendance = Attendance.objects.filter(date=date, empId=j)
+        print(attendance)
+        for i in attendance:
+            if i.leave == 0:
+                present += 1
+            else:
+                leave += 1
+
+    absent = len(empids) - (present + leave)
+
+    report = {'present':present, 'absent':absent, 'leave':leave}
+
+    return JsonResponse(report)
+
+

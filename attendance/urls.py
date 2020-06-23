@@ -15,6 +15,8 @@ from attendance.views import(
     AttendanceList,
     AttendanceDetail,
     AttendanceFilter,
+    report_att,
+    daily_report,
 )
 
 app_name = "api-attendance"
@@ -41,6 +43,8 @@ urlpatterns = [
     path('api/dept', DepartmentList.as_view(), name='Dept-List'),
     path('api/dept/<int:pk>/',DepartmentDetail.as_view),
     
+    path('api/report',report_att),
+    path('api/daily_report',daily_report),
     url('^$',views.home)   
 ]
 
