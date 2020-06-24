@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from attendance import recognize as rec, data_creator as dc, train_model
 from attendance.models import Account,Organization, Department, Attendance
 from django.contrib.auth import get_user_model
+from wsgiref.util import FileWrapper
+import os
 
 import django_filters.rest_framework
 from rest_framework import generics,mixins,permissions
@@ -20,7 +22,9 @@ import numpy as np
 import urllib
 import json
 import cv2
+import pandas as pd
 import datetime
+from io import BytesIO
 
 def home(request):
     return render(request, 'home.html')
@@ -105,7 +109,20 @@ class OrganizationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OrganizationSerializer
 
 class DepartmentList(generics.ListCreateAPIView):
-    queryset = Department.objects.all()
+
+    def get_queryset(self):
+        queryset = Department.objects.all()
+
+        orgId    = self.request.query_params.get('orgId', None)
+
+        if orgId is not None:
+            queryset = Department.objects.filter()
+            for i in Department.objects.all():
+                if (i.account_set.filter(orgId=orgId)):
+                    queryset.add(i)
+            print(queryset)
+        return queryset
+
     serializer_class = DepartmentSerializer
 
 class DepartmentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -277,5 +294,56 @@ def daily_report(request):
     report = {'present':present, 'absent':absent, 'leave':leave}
 
     return JsonResponse(report)
+
+@csrf_exempt
+def report_download(request):
+    # a = {"111": [0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    # a['121'] = [0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    report = {}
+    empids = set()
+    orgId = request.GET['orgId']
+    month = request.GET['month']
+
+    # employee = Account.objects.raw(f'select * from attendance_account where orgId_id={orgId}')
+    employee = Account.objects.filter(orgId=orgId)
+    for i in employee:
+        empids.add(i.empId)
+    
+    for i in empids:
+        # query = Attendance.objects.raw(f'select * from attendance_attendance where empId_id={i}')
+        query = Attendance.objects.filter(empId=i)
+        days = ['Absent']*31
+        for j in query:
+            if j.date.month == int(month):
+                if j.leave==0:
+                    days[j.date.day-1] = 'Present'
+                else:
+                    days[j.date.day-1] = 'On Leave'
+        days.insert(0,days.count('On Leave'))
+        days.insert(0,days.count('Absent'))
+        days.insert(0,days.count('Present'))
+        report[f'{i}'] = days
+
+    column = [str(i) for i in range(1,32)]
+    column.insert(0,'Emp_ID')
+    column.insert(1,'Leaves')
+    column.insert(1,'Absent')
+    column.insert(1,'Present')
+
+    rows = []
+    for i in report:
+        temp = report[i]
+        temp.insert(0,i)
+        rows.append(temp)
+
+    df=pd.DataFrame(rows,columns=column)
+
+    df.to_csv('download_file.csv',index=False)
+    
+    response = HttpResponse(FileWrapper(open(os.getcwd() + '/download_file.csv')), content_type='text/csv' ) 
+    filename = 'Report-' + str(datetime.datetime.now().date()) + '-' + str(datetime.datetime.now().time())[:8].replace(':','.')
+    response['Content-Disposition'] = f'attachment; filename={filename}.csv'
+    os.system('rm download_file.csv')
+    return response
 
 

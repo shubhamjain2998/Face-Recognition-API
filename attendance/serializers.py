@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         user = get_user_model().objects.create(
             email=validated_data['email'],
+            is_staff=validated_data['is_staff']
             # username=validated_data['username']
         )
         user.set_password(validated_data['password'])
