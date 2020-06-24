@@ -112,15 +112,6 @@ class DepartmentList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Department.objects.all()
-
-        orgId    = self.request.query_params.get('orgId', None)
-
-        if orgId is not None:
-            queryset = Department.objects.filter()
-            for i in Department.objects.all():
-                if (i.account_set.filter(orgId=orgId)):
-                    queryset.add(i)
-            print(queryset)
         return queryset
 
     serializer_class = DepartmentSerializer
