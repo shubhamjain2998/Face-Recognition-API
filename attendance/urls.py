@@ -17,7 +17,13 @@ from attendance.views import(
     AttendanceFilter,
     report_att,
     daily_report,
+    Attendance_ConfigList,
     report_download,
+    payment_gateway,
+    PaymentsList,
+    PaymentsDetail,
+    CardsDetail,
+    CardsList,
 )
 
 app_name = "api-attendance"
@@ -40,6 +46,7 @@ urlpatterns = [
     path('api/attendance', AttendanceList.as_view(), name='Attendance-List'),
     path('api/attendance/<int:pk>', AttendanceList.as_view(), name='Attendance-Detail'),
     path('api/attendance/filter', AttendanceFilter.as_view(), name='Attendance-Filter'),
+    path('api/attendance_config',Attendance_ConfigList.as_view(), name='Attendance-Configuration'),
 
     path('api/dept', DepartmentList.as_view(), name='Dept-List'),
     path('api/dept/<int:pk>/',DepartmentDetail.as_view()),
@@ -47,6 +54,12 @@ urlpatterns = [
     path('api/report',report_att),
     path('api/daily_report',daily_report),
     path('api/report_download',report_download),
+    path('api/payment_capture',payment_gateway),
+    path('api/payments',PaymentsList.as_view()),
+    path('api/payments/<int:pk>',PaymentsDetail.as_view()),
+    path('api/cards',CardsList.as_view()),
+    path('api/cards/<int:pk>',CardsDetail.as_view()),
+
     url('^$',views.home)   
 ]
 

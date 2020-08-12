@@ -1,6 +1,6 @@
 from rest_framework import serializers
 # from django.contrib.auth import get_user_model
-from .models import Account,Organization,Department,Attendance
+from .models import Account,Organization,Department,Attendance,Attendance_Config, Payments, Cards
 from django.contrib.auth import get_user_model
 
 class UserSerializer(serializers.ModelSerializer):
@@ -103,3 +103,18 @@ class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
         fields = "__all__"
+
+class Attendance_ConfigSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Attendance_Config
+        fields = "__all__"
+
+class PaymentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model   = Payments
+        fields  = '__all__' 
+
+class CardsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model   = Cards
+        fields  = '__all__'

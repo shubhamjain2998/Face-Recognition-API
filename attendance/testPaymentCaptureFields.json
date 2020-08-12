@@ -1,0 +1,43 @@
+{
+	"id": "pay_F7hc96quxGkneU",
+	"entity": "payment",
+	"amount": 50000,
+	"currency": "INR",
+	"status": "captured",
+	"order_id": "",
+	"invoice_id": "",
+	"international": false,
+	"method": "card",
+	"amount_refunded": 0,
+	"refund_status": "",
+	"captured": true,
+	"description": "Donate yourself some time",
+	"card_id": "card_F7hc9BMuzE8jQL",
+	"card": {
+		"id": "card_F7hc9BMuzE8jQL",
+		"entity": "card",
+		"name": "Ashish Tiwari",
+		"last4": "5558",
+		"network": "MasterCard",
+		"type": "credit",
+		"issuer": "KARB",
+		"international": false,
+		"emi": false
+	},
+	"bank": "",
+	"wallet": "",
+	"vpa": "",
+	"email": "jains1801@gmail.com",
+	"contact": "+919669611093",
+	"notes": {
+		"address": "Goa,India"
+	},
+	"fee": 1000,
+	"tax": 0,
+	"error_code": "",
+	"error_description": "",
+	"error_source": "",
+	"error_step": "",
+	"error_reason": "",
+	"created_at": 1593272675
+}

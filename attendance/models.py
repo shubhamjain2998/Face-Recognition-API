@@ -92,10 +92,48 @@ class Account(models.Model):
 
 class Attendance(models.Model): 
     empId       = models.ForeignKey(Account, to_field='empId', on_delete=models.CASCADE)
-    check_in    = models.TimeField()
-    check_out   = models.TimeField()
+    check_in    = models.TimeField(null=True,blank=True)
+    check_out   = models.TimeField(null=True,blank=True)
     date        = models.DateField()
     leave       = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.empId)
+
+class Payments(models.Model):
+    payId       = models.CharField(max_length=20)
+    amount      = models.IntegerField()
+    currency    = models.CharField(max_length=5)
+    method      = models.CharField(max_length=20)
+    captured    = models.BooleanField(default=False)
+    description = models.TextField(max_length=100)
+    email       = models.EmailField()
+    contact     = models.IntegerField()
+    fee         = models.IntegerField()
+    tax         = models.IntegerField()
+    createdAt   = models.TimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.payId)
+
+class Cards(models.Model):
+    cardId          = models.CharField(max_length=20)
+    name            = models.CharField(max_length=20)
+    last4           = models.CharField(max_length=4)
+    network         = models.CharField(max_length=20)
+    typeOfCard      = models.CharField(max_length=10)
+    issuer          = models.CharField(max_length=20)
+    international   = models.BooleanField(default=False)
+    emi             = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.cardId)
+
+
+
+class Attendance_Config(models.Model):
+    orgId           = models.ForeignKey(Organization, on_delete = models.CASCADE)
+    check_in_start  = models.TimeField()
+    check_in_end    = models.TimeField()
+    check_out_start = models.TimeField()
+    check_out_end   = models.TimeField()
