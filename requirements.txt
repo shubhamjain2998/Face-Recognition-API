@@ -40,7 +40,7 @@ sqlparse==0.3.1
 threadpoolctl==2.0.0
 toml==0.10.0
 typed-ast==1.4.1
-urllib3==1.25.9
+urllib3==1.26.5
 whitenoise==5.0.1
 wrapt==1.12.1
 xgboost==1.0.2
